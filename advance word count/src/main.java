@@ -19,26 +19,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-
 public class main implements ActionListener {
-	
+
 	private static String clrPunPara;
 	private String line;
 	private String myWholeText = "";
 
-	
-	ArrayList <String> wholeWord = new ArrayList<String>();
+	ArrayList<String> wholeWord = new ArrayList<String>();
 
 	JFrame window;
 	JButton selectButton, clearButton;
 	JTextArea textArea;
 	JScrollPane scrollPane;
 
-	
 	public static void main(String[] args) {
 		new main();
 
-	
 	}
 
 	public main() {
@@ -47,7 +43,7 @@ public class main implements ActionListener {
 		createButtons();
 		window.setVisible(true);
 	}
-
+	//creating window
 	public void createWindow() {
 		window = new JFrame("Advance Words Count");
 		window.setLayout(new FlowLayout());
@@ -95,7 +91,6 @@ public class main implements ActionListener {
 
 					while ((line = read.readLine()) != null) {
 						myWholeText = myWholeText + line;
-						
 
 					}
 					duplicateWords(myWholeText);
@@ -114,9 +109,9 @@ public class main implements ActionListener {
 			textArea.setText("");
 		}
 	}
-	
+
 	public void duplicateWords(String inputStringFromFile) {
-		ArrayList <String> punctuationList = new ArrayList<String>();
+		ArrayList<String> punctuationList = new ArrayList<String>();
 		punctuationList.add("[");
 		punctuationList.add("!");
 		punctuationList.add("\\");
@@ -150,8 +145,8 @@ public class main implements ActionListener {
 		punctuationList.add("|");
 		punctuationList.add("~");
 		punctuationList.add("");
-		
-		ArrayList <String> wordList = new ArrayList<String>();
+
+		ArrayList<String> wordList = new ArrayList<String>();
 		wordList.add("i");
 		wordList.add("me");
 		wordList.add("my");
@@ -168,7 +163,7 @@ public class main implements ActionListener {
 		wordList.add("he");
 		wordList.add("him");
 		wordList.add("his");
-		
+
 		wordList.add("himself");
 		wordList.add("she");
 		wordList.add("her");
@@ -270,7 +265,6 @@ public class main implements ActionListener {
 		wordList.add("no");
 		wordList.add("nor");
 		wordList.add("not");
-		
 
 		wordList.add("only");
 		wordList.add("own");
@@ -289,16 +283,16 @@ public class main implements ActionListener {
 
 		// First clear the punctuation from the text.
 		inputStringFromFile = inputStringFromFile.toLowerCase();
-		inputStringFromFile=inputStringFromFile.replace(",","");
-		inputStringFromFile=inputStringFromFile.replace(".","");
-		
+		inputStringFromFile = inputStringFromFile.replace(",", "");
+		inputStringFromFile = inputStringFromFile.replace(".", "");
+
 		final String[] splitwords = inputStringFromFile.split(" ");
 		List<String> allwords = Arrays.asList(splitwords);
 		wholeWord.addAll(allwords);
 		final Map<String, Integer> wordNumbers = new HashMap<String, Integer>();
 		wholeWord.removeAll(wordList);
 		wholeWord.remove(punctuationList);
-		
+
 		Collections.sort(wholeWord, Collections.reverseOrder());
 
 		for (String word : wholeWord) {
@@ -311,10 +305,10 @@ public class main implements ActionListener {
 		final Set<String> wordsInString = wordNumbers.keySet();
 		for (String word : wordsInString) {
 			// Before append the words , sort them descending order
-			//Collections.sort(word, Collections.reverseOrder());
+			// Collections.sort(word, Collections.reverseOrder());
 
 			if (wordNumbers.get(word) > 1) {
-				textArea.append("\n" + "(" +wordNumbers.get(word)  + " , " + word + ")");
+				textArea.append("\n" + "(" + wordNumbers.get(word) + " , " + word + ")");
 			}
 		}
 	}

@@ -96,7 +96,6 @@ public class main implements ActionListener {
 
 					}
 					duplicateWords(myWholeText);
-
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

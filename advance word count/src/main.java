@@ -26,9 +26,6 @@ public class main implements ActionListener {
 
 	private String line;
 	private String myWholeText = "";
-
-	ArrayList<String> wholeWordList = new ArrayList<String>();
-
 	JFrame window;
 	JButton selectButton, clearButton;
 	JTextArea textArea;
@@ -94,6 +91,7 @@ public class main implements ActionListener {
 						myWholeText = myWholeText + line;
 
 					}
+					// call the duplicateword method
 					duplicateWords(myWholeText);
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -107,6 +105,7 @@ public class main implements ActionListener {
 		}
 		if (e.getSource() == clearButton) {
 			textArea.setText("");
+			
 		}
 	}
 
@@ -283,18 +282,19 @@ public class main implements ActionListener {
 		inputStringFromFile = inputStringFromFile.toLowerCase();
 		inputStringFromFile = inputStringFromFile.replace(",", "");
 		inputStringFromFile = inputStringFromFile.replace(".", "");
-		
-		//Map of repeated words
-		final Map<String, Integer> repeatedWord = new HashMap<String, Integer>();
+
 		// split line using space as delimiter
 		final String[] splitwords = inputStringFromFile.split(" ");
-		//add split words to the array list
+
+		// create an array list for contain the split words
 		List<String> allwords = Arrays.asList(splitwords);
-		
+		ArrayList<String> wholeWordList = new ArrayList<String>();
+		// add split words to the array list
 		wholeWordList.addAll(allwords);
 		wholeWordList.removeAll(wordList);
 		wholeWordList.removeAll(punctuationList);
-		
+		// Map of repeated words
+		final Map<String, Integer> repeatedWord = new HashMap<String, Integer>();
 		for (String word : wholeWordList) {
 			if (repeatedWord.containsKey(word)) {
 				repeatedWord.put(word, repeatedWord.get(word) + 1);
@@ -303,42 +303,36 @@ public class main implements ActionListener {
 			}
 		}
 		Map<String, Integer> sortWordMap = sortingByCountValue(repeatedWord);
+		repeatedWord.clear();
 
-		Set<String> wordsInString = sortWordMap.keySet();
-		for (Map.Entry<String, Integer> entry : 
-			sortWordMap.entrySet()) {
-				textArea.append("\n" + "(" + entry.getValue() + " , " + entry.getKey() + ")");
-			}
+		for (Map.Entry<String, Integer> entry : sortWordMap.entrySet()) {
+			textArea.append("\n" + "(" + entry.getValue() + " , " + entry.getKey() + ")");
 		}
-	 public static Map<String, Integer> sortingByCountValue(
-	            Map<String, Integer> mapOfRepeatedWord) {
-	 
-	        // get entrySet from HashMap object
-	        Set<Map.Entry<String, Integer>> setOfWordEntries = 
-	                mapOfRepeatedWord.entrySet();
-	 
-	        // convert HashMap to List of Map entries
-	        List<Map.Entry<String, Integer>> listOfwordEntry = 
-	                new ArrayList<Map.Entry<String, Integer>>(
-	                        setOfWordEntries);
-	 
-	        // sort list of entries using Collections.sort(ls, cmptr);
-	        Collections.sort(listOfwordEntry, 
-	                new Comparator<Map.Entry<String, Integer>>() {
-	            @Override
-	            public int compare(Entry<String, Integer> es1, 
-	                    Entry<String, Integer> es2) {
-	                return es2.getValue().compareTo(es1.getValue());
-	            }
-	        });
-	        // store into LinkedHashMap for maintaining insertion
-	        Map<String, Integer> wordLHMap = 
-	                new LinkedHashMap<String, Integer>();
-	 
-	        // iterating list and storing in LinkedHahsMap
-	        for(Map.Entry<String, Integer> map : listOfwordEntry){
-	        	wordLHMap.put(map.getKey(), map.getValue());
-	        }
-	        return wordLHMap;
-	    }
+
+	}
+
+	public static Map<String, Integer> sortingByCountValue(Map<String, Integer> mapOfRepeatedWord) {
+
+		// get entrySet from HashMap object
+		Set<Map.Entry<String, Integer>> setOfWordEntries = mapOfRepeatedWord.entrySet();
+
+		// convert HashMap to List of Map entries
+		List<Map.Entry<String, Integer>> listOfwordEntry = new ArrayList<Map.Entry<String, Integer>>(setOfWordEntries);
+
+		// sort list of entries using Collections.sort(ls, cmptr);
+		Collections.sort(listOfwordEntry, new Comparator<Map.Entry<String, Integer>>() {
+			@Override
+			public int compare(Entry<String, Integer> es1, Entry<String, Integer> es2) {
+				return es2.getValue().compareTo(es1.getValue());
+			}
+		});
+		// store into LinkedHashMap for maintaining insertion
+		Map<String, Integer> wordLHMap = new LinkedHashMap<String, Integer>();
+
+		// iterating list and storing in LinkedHahsMap
+		for (Map.Entry<String, Integer> map : listOfwordEntry) {
+			wordLHMap.put(map.getKey(), map.getValue());
+		}
+		return wordLHMap;
+	}
 }
